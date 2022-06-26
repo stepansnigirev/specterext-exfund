@@ -1,0 +1,5 @@
+recursive-include src/embeed/specterext/massfund/templates *
+recursive-include src/embeed/specterext/massfund/static *
+recursive-include src/embeed/specterext/massfund/*/LC_MESSAGES *.mo
+recursive-include src/embeed/specterext/massfund/translations/*/LC_MESSAGES *.po
+include requirements.txt
