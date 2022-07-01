@@ -23,9 +23,30 @@ def specter() -> Specter:
     return app.specter
 
 
-@massfund_endpoint.route("/")
+@massfund_endpoint.route("/", methods=["GET", "POST"])
 def index():
+    user = app.specter.user_manager.get_user()
+    show_menu = MassfundService.id in user.services
+
+    wallet_names = sorted(current_user.wallet_manager.wallets.keys())
+    wallets = [current_user.wallet_manager.wallets[name] for name in wallet_names]
+
+    try:
+        if request.method == "POST":
+            action = request.form["action"]
+            if action == "settings":
+                show_menu = request.form.get("show_menu")
+                if show_menu:
+                    user.add_service(MassfundService.id)
+                else:
+                    user.remove_service(MassfundService.id)
+            else:
+                flash(f"Wrong action {action}", "error")
+    except Exception as e:
+        flash(f"Server error: {e}", "error")
     return render_template(
         "massfund/index.jinja",
+        wallets=wallets,
+        show_menu=show_menu
     )
 
