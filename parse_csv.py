@@ -53,6 +53,21 @@ m/84'/1'/0'/0/18,bcrt1qsu28up6uf3nst5hd8w4gnef0q7spetqusnkwyv,,
 m/84'/1'/0'/0/19,bcrt1qptm8uqqw8wr6l0che5a3lztsrna3zsz9v503f9,,
 """
 
+DATA = """
+Serial number,Address
+lbl0,ert1qzyd2jkmm5l62spzju80fa7kfhhamqj0vd2s2sr
+lbl1,ert1qlf4umta92erxqa2nvtvhvhp6r220dtm82jtelx
+lbl2,ert1q2jhge69kk6s8pjvv6y798kvqzypay60gcyt57c
+lbl3,ert1qu59u4tp26l42q77gvnv956y4aj227nq3dcppt0
+lbl4,ert1qck58mjgw0x6eyr0k5t35t6fla5jp87p8ah26rv
+lbl5,ert1qwyjl2ayw3uvun29p6hejnljactuwghmgkg28m9
+lbl6,ert1qjepvvtwcumqrn36m5hn4q0ytylzxt8nm5grz7g
+lbl7,ert1q8l0syqy99ncqx048ed5xa48vyqxecjvjdprdtl
+lbl8,ert1qhxsnfqqgwtx4tcm2dcj29r2y89wp6fy0hhx3f8
+lbl9,ert1q46yussdch3dmknqypyx32lddaskl89x7xajaca
+"""
+
+
 def main():
     print(parse_csv(DATA))
 

@@ -8,6 +8,7 @@ from cryptoadvance.specter.services.controller import user_secret_decrypted_requ
 from cryptoadvance.specter.user import User
 from cryptoadvance.specter.wallet import Wallet
 from cryptoadvance.specter.commands.psbt_creator import PsbtCreator
+from embit.liquid.networks import get_network
 from .service import MassfundService
 from .util import parse_csv
 
@@ -44,31 +45,41 @@ def index():
             elif action == "parse":
                 rawcsv = request.form.get("rawcsv", "")
                 addresses, chain, invalid_lines = parse_csv(rawcsv)
-                if chain != app.specter.chain:
+                expected_net = get_network(app.specter.chain)
+                net = get_network(chain)
+                if net != expected_net:
                     raise ValueError(f"Invalid chain: {chain}, expected: {app.specter.chain}")
                 # TODO: flash invalid_lines
                 return render_template("massfund/table.jinja", wallets=wallets, addresses=addresses)
-            # elif action == "createpsbt":
-            #     wallet_alias = request.form.get("source_wallet")
-                # wallet = current_user.wallet_manager.wallets[wallet_alias]
-                # psbt_creator = PsbtCreator(
-                #     app.specter,
-                #     wallet,
-                #     request.form.get("ui_option", "ui"),
-                #     request_form=request.form,
-                #     recipients_txt=request.form.get("recipients",""),
-                #     recipients_amount_unit=request.form.get("amount_unit_text"),
-                # )
-                # psbt = psbt_creator.create_psbt(wallet)
-                # return render_template(
-                #     "wallet/send/sign/wallet_send_sign_psbt.jinja",
-                #     psbt=psbt,
-                #     labels=[""],
-                #     wallet_alias=wallet_alias,
-                #     wallet=wallet,
-                #     specter=app.specter,
-                #     rand=0,
-                # )
+            elif action == "createpsbt":
+                wallet_alias = request.form.get("source_wallet")
+                wallet = current_user.wallet_manager.wallets[wallet_alias]
+                addresses = request.form.getlist("addresses[]")
+                labels = request.form.getlist("labels[]")
+                amounts = request.form.getlist("amounts[]")
+                print(request.form)
+                obj = {
+                    "fee_option": request.form.get("fee_option", "dynamic"),
+                    "fee_rate": request.form.get("fee_rate", "1"),
+                    "fee_rate_dynamic": request.form.get("fee_rate_dynamic", "1"),
+                    "rbf": True,
+                }
+                for i, (addr, label, amount) in enumerate(zip(addresses, labels, amounts)):
+                    obj[f"address_{i}"] = addr
+                    obj[f"label_{i}"] = label
+                    obj[f"btc_amount_{i}"] = round(float(amount)*1e-8,8)
+                    obj[f"amount_unit_{i}"] = "btc"
+                psbt_creator = PsbtCreator(app.specter, wallet, "ui", request_form=obj)
+                psbt = psbt_creator.create_psbt(wallet)
+                return render_template(
+                    "wallet/send/sign/wallet_send_sign_psbt.jinja",
+                    psbt=psbt,
+                    labels=labels,
+                    wallet_alias=wallet_alias,
+                    wallet=wallet,
+                    specter=app.specter,
+                    rand=0,
+                )
             else:
                 flash(f"Wrong action {action}", "error")
     except Exception as e:
