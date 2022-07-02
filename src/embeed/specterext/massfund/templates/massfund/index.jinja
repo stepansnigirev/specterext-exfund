@@ -1,7 +1,6 @@
 {% extends "base.jinja" %}
 {% block main %}
 
-{% include "includes/qr-scanner.html" %}
 {% include "includes/file-uploader.html" %}
 {% include "includes/dnd-textarea.html" %}
 
@@ -18,19 +17,9 @@
     </p>
     <h2>Destinations</h2>
     <div class="row">
-        <dnd-textarea name="rawcsv" id="rawcsv" placeholder="You can paste a list of addresses here or drag & drop a csv file.') }}"></dnd-textarea>
+        <dnd-textarea name="rawcsv" id="rawcsv" placeholder="You can paste a list of addresses here or drag & drop a csv file." value="{{rawcsv}}"></dnd-textarea>
     </div>
-    <div class="row break-row-mobile" style="justify-content: space-between;">
-        <qr-scanner id="addr-scan" style="width:50%">
-            <a slot="button" href="#" class="btn" style="margin: 8px;">
-                <img src="{{ url_for('static', filename='img/qr-code.svg') }}" style="width: 26px; margin: 0px;" class="svg-white"> Scan
-                <tool-tip>
-                    <h4 slot="title">Scan QR code with addresses</h4>
-                    <span slot="paragraph">Should be just an address or a bitcoin ur-string like<br><code>bitcoin:address?amount=0.01</code>
-                    </span>
-                </tool-tip>
-            </a>
-        </qr-scanner>
+    <div class="row center">
         <file-uploader id="addr-uploader" image_src="{{ url_for('static', filename='img/file.svg') }}" button_width="300px">
             <span slot="description">Choose a CSV file</span>
             <tool-tip slot="tool-tip"> 
@@ -51,4 +40,14 @@
     </div>
 </form>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    let textarea = document.getElementById("rawcsv");
+    document.addEventListener('file-upload', e => {
+        let result = e.detail.result;
+        textarea.value = result;
+    });
+</script>
 {% endblock %}
