@@ -31,45 +31,46 @@ EB000025,bc1q60aehcjzh5stjzt83ta72fymgz802999a560ak
 
 DATA = """
 Serial number,Address
-m/84'/1'/0'/0/0,bcrt1qe2lmnwnmu7avpr2htnvwsu0z8886dkh0gj0hms,,
-m/84'/1'/0'/0/1,bcrt1qr7d9ektwguscl6mtgt406kesrjdxxtnt9xkvrn,,
-m/84'/1'/0'/0/2,bcrt1qr54ct3lmuytux2ut9vvmphxgsrwrduggnahqqe,,
-m/84'/1'/0'/0/3,bcrt1qnk6p4ker2zkxeez9dymjd3g6j6xctceqlnsk6e,,
-m/84'/1'/0'/0/4,bcrt1qgp9dpv2fjszfe70d9c4jweadedrzlgc38lpyym,,
-m/84'/1'/0'/0/5,bcrt1qfqg6jxr7ykw8329t6ehfw7qsqe5u4nuavetmpm,,
-m/84'/1'/0'/0/6,bcrt1qgfcg8df8u39np8xz8msu4p7vvewv42vlxdap56,,
-m/84'/1'/0'/0/7,bcrt1qggjznaymue53nzygy956q43gmwyvamdgtmfa5x,,
-m/84'/1'/0'/0/8,bcrt1q0tujnmff0qvv4lxtywr804q56jp4sjkfklea7n,,
-m/84'/1'/0'/0/9,bcrt1qshjxwysyrhgcxkqh3a09h5rzxx3nn32mxr34he,,
-m/84'/1'/0'/0/10,bcrt1q3vwpyg09uafwmzakg679lxcck9ej5jppzacy49,,
-m/84'/1'/0'/0/11,bcrt1q8262397ysd4uawa76zctru4xe42xka8hn0xlma,,
-m/84'/1'/0'/0/12,bcrt1qrsl9xrk92wtcnp68w3dels0hp7kqntjs6t44md,,
-m/84'/1'/0'/0/13,bcrt1qqyz8sv9mu7nhl2uq9q3wuuwseydntvrrz7kfu6,,
-m/84'/1'/0'/0/14,bcrt1qwg2vf27knm5lxjsv6ygvk4a9n7keepzyznertt,,
-m/84'/1'/0'/0/15,bcrt1qd6g5xg0w0w30jjc7tq2fnkge9q95l4ca2vw0ed,,
-m/84'/1'/0'/0/16,bcrt1qyy04s2cjufa9494ywt64zmrv6crnzqr0at4vlt,,
-m/84'/1'/0'/0/17,bcrt1q2d6j9pqchm2ds8y792s9mhjcsakqp49ajzahn9,,
-m/84'/1'/0'/0/18,bcrt1qsu28up6uf3nst5hd8w4gnef0q7spetqusnkwyv,,
-m/84'/1'/0'/0/19,bcrt1qptm8uqqw8wr6l0che5a3lztsrna3zsz9v503f9,,
+EB000000,bcrt1qe2lmnwnmu7avpr2htnvwsu0z8886dkh0gj0hms,,
+EB000001,bcrt1qr7d9ektwguscl6mtgt406kesrjdxxtnt9xkvrn,,
+EB000002,bcrt1qr54ct3lmuytux2ut9vvmphxgsrwrduggnahqqe,,
+EB000003,bcrt1qnk6p4ker2zkxeez9dymjd3g6j6xctceqlnsk6e,,
+EB000004,bcrt1qgp9dpv2fjszfe70d9c4jweadedrzlgc38lpyym,,
+EB000005,bcrt1qfqg6jxr7ykw8329t6ehfw7qsqe5u4nuavetmpm,,
+EB000006,bcrt1qgfcg8df8u39np8xz8msu4p7vvewv42vlxdap56,,
+EB000007,bcrt1qggjznaymue53nzygy956q43gmwyvamdgtmfa5x,,
+EB000008,bcrt1q0tujnmff0qvv4lxtywr804q56jp4sjkfklea7n,,
+EB000009,bcrt1qshjxwysyrhgcxkqh3a09h5rzxx3nn32mxr34he,,
+EB000010,bcrt1q3vwpyg09uafwmzakg679lxcck9ej5jppzacy49,,
+EB000011,bcrt1q8262397ysd4uawa76zctru4xe42xka8hn0xlma,,
+EB000012,bcrt1qrsl9xrk92wtcnp68w3dels0hp7kqntjs6t44md,,
+EB000013,bcrt1qqyz8sv9mu7nhl2uq9q3wuuwseydntvrrz7kfu6,,
+EB000014,bcrt1qwg2vf27knm5lxjsv6ygvk4a9n7keepzyznertt,,
+EB000015,bcrt1qd6g5xg0w0w30jjc7tq2fnkge9q95l4ca2vw0ed,,
+EB000016,bcrt1qyy04s2cjufa9494ywt64zmrv6crnzqr0at4vlt,,
+EB000017,bcrt1q2d6j9pqchm2ds8y792s9mhjcsakqp49ajzahn9,,
+EB000018,bcrt1qsu28up6uf3nst5hd8w4gnef0q7spetqusnkwyv,,
+EB000019,bcrt1qptm8uqqw8wr6l0che5a3lztsrna3zsz9v503f9,,
 """
 
 DATA = """
 Serial number,Address
-lbl0,ert1qzyd2jkmm5l62spzju80fa7kfhhamqj0vd2s2sr
-lbl1,ert1qlf4umta92erxqa2nvtvhvhp6r220dtm82jtelx
-lbl2,ert1q2jhge69kk6s8pjvv6y798kvqzypay60gcyt57c
-lbl3,ert1qu59u4tp26l42q77gvnv956y4aj227nq3dcppt0
-lbl4,ert1qck58mjgw0x6eyr0k5t35t6fla5jp87p8ah26rv
-lbl5,ert1qwyjl2ayw3uvun29p6hejnljactuwghmgkg28m9
-lbl6,ert1qjepvvtwcumqrn36m5hn4q0ytylzxt8nm5grz7g
-lbl7,ert1q8l0syqy99ncqx048ed5xa48vyqxecjvjdprdtl
-lbl8,ert1qhxsnfqqgwtx4tcm2dcj29r2y89wp6fy0hhx3f8
-lbl9,ert1q46yussdch3dmknqypyx32lddaskl89x7xajaca
+EL000000,ert1qzyd2jkmm5l62spzju80fa7kfhhamqj0vd2s2sr
+EL000001,ert1qlf4umta92erxqa2nvtvhvhp6r220dtm82jtelx
+EL000002,ert1q2jhge69kk6s8pjvv6y798kvqzypay60gcyt57c
+EL000003,ert1qu59u4tp26l42q77gvnv956y4aj227nq3dcppt0
+EL000004,ert1qck58mjgw0x6eyr0k5t35t6fla5jp87p8ah26rv
+EL000005,ert1qwyjl2ayw3uvun29p6hejnljactuwghmgkg28m9
+EL000006,ert1qjepvvtwcumqrn36m5hn4q0ytylzxt8nm5grz7g
+EL000007,ert1q8l0syqy99ncqx048ed5xa48vyqxecjvjdprdtl
+EL000008,ert1qhxsnfqqgwtx4tcm2dcj29r2y89wp6fy0hhx3f8
+EL000009,ert1q46yussdch3dmknqypyx32lddaskl89x7xajaca
 """
 
 
 def main():
     print(parse_csv(DATA))
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

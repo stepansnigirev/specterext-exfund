@@ -5,9 +5,11 @@ import click
 
 logger = logging.getLogger(__name__)
 
+
 @click.group()
 def cli():
     pass
+
 
 @cli.command()
 @click.pass_context
@@ -32,10 +34,18 @@ def cli():
 def start(ctx, host, ssl, debug, filelog, config):
     if config == None:
         config = "embeed.specterext.massfund.config.AppProductionConfig"
-    ctx.invoke(server, host=host, ssl=ssl, debug=debug, filelog=filelog, port=8080, config=config)
-    
+    ctx.invoke(
+        server,
+        host=host,
+        ssl=ssl,
+        debug=debug,
+        filelog=filelog,
+        port=8080,
+        config=config,
+    )
+
+
 entry_point.add_command(start)
 
 if __name__ == "__main__":
     entry_point()
-    

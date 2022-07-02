@@ -4,7 +4,8 @@ from embit.liquid.addresses import addr_decode
 from embit import base58, bech32
 from collections import OrderedDict
 
-KEYWORDS = ["address", "amount" ,"asset", "label"]
+KEYWORDS = ["address", "amount", "asset", "label"]
+
 
 def detect_network(addr):
     """Detects what networks the address belongs to"""
@@ -20,6 +21,7 @@ def detect_network(addr):
     for net in NETWORKS.values():
         if data[:2] in [net.get("bp2sh"), net.get("p2sh")]:
             return net
+
 
 def checkaddr(addr):
     sc, pub = addr_decode(addr)
@@ -53,8 +55,10 @@ def checkaddr(addr):
     #         if net["bech32"] == hrp:
     #             return chain, net, sc
 
+
 class ParsingError(Exception):
     pass
+
 
 def parse_header(line):
     arr = [e.strip() for e in line.split(",")]
@@ -75,8 +79,13 @@ def parse_header(line):
         header["label"] = arr.index("serial number")
     return header
 
+
 def parse_csv(data):
-    lines = [line.strip() for line in data.strip().replace("\r","").split("\n") if line.strip()]
+    lines = [
+        line.strip()
+        for line in data.strip().replace("\r", "").split("\n")
+        if line.strip()
+    ]
     header = None
     if len(lines) > 0:
         header = parse_header(lines[0])
@@ -109,8 +118,10 @@ def parse_csv(data):
                         if el in addresses:
                             raise ParsingError(f"Address {el} is found twice!")
                         if found:
-                            raise ParsingError(f"Two addresses in the same line: {line}")
-                        obj.update({ "address": el, "chain": chain })
+                            raise ParsingError(
+                                f"Two addresses in the same line: {line}"
+                            )
+                        obj.update({"address": el, "chain": chain})
                         found = True
                     # propogate parsing error
                     except ParsingError as e:
@@ -127,7 +138,7 @@ def parse_csv(data):
                         raise ParsingError(f"Address {el} is found twice!")
                     if found:
                         raise ParsingError(f"Two addresses in the same line: {line}")
-                    addresses[el] = { "address": el, "chain": chain }
+                    addresses[el] = {"address": el, "chain": chain}
                     found = True
                 # propogate parsing error
                 except ParsingError as e:
@@ -137,7 +148,7 @@ def parse_csv(data):
         if not found:
             invalid_lines.append(line)
     # detect chain
-    chain = { el["chain"] for el in addresses.values() }
+    chain = {el["chain"] for el in addresses.values()}
     if len(chain) > 1:
         raise ParsingError("Addresses belong to different chains!")
     if len(chain) == 0:
