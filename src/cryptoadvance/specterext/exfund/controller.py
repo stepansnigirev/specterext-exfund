@@ -9,17 +9,17 @@ from cryptoadvance.specter.user import User
 from cryptoadvance.specter.wallet import Wallet
 from cryptoadvance.specter.commands.psbt_creator import PsbtCreator
 from embit.liquid.networks import get_network
-from .service import MassfundService
+from .service import ExfundService
 from .util import parse_csv
 
 logger = logging.getLogger(__name__)
 
-massfund_endpoint = MassfundService.blueprint
+exfund_endpoint = ExfundService.blueprint
 
 
-def ext() -> MassfundService:
+def ext() -> ExfundService:
     """convenience for getting the extension-object"""
-    return app.specter.ext["massfund"]
+    return app.specter.ext["exfund"]
 
 
 def specter() -> Specter:
@@ -27,10 +27,10 @@ def specter() -> Specter:
     return app.specter
 
 
-@massfund_endpoint.route("/", methods=["GET", "POST"])
+@exfund_endpoint.route("/", methods=["GET", "POST"])
 def index():
     user = app.specter.user_manager.get_user()
-    show_menu = MassfundService.id in user.services
+    show_menu = ExfundService.id in user.services
 
     wallet_names = sorted(current_user.wallet_manager.wallets.keys())
     wallets = [current_user.wallet_manager.wallets[name] for name in wallet_names]
@@ -41,9 +41,9 @@ def index():
             if action == "settings":
                 show_menu = request.form.get("show_menu")
                 if show_menu:
-                    user.add_service(MassfundService.id)
+                    user.add_service(ExfundService.id)
                 else:
-                    user.remove_service(MassfundService.id)
+                    user.remove_service(ExfundService.id)
             elif action == "parse":
                 rawcsv = request.form.get("rawcsv", "")
                 addresses, chain, invalid_lines = parse_csv(rawcsv)
@@ -58,7 +58,7 @@ def index():
                 assets = set().union(*[wallet.balance.get("assets",{}).keys() for wallet in wallets])
                 assets = [app.specter.default_asset]+list(assets)
                 return render_template(
-                    "massfund/table.jinja",
+                    "exfund/table.jinja",
                     wallets=wallets,
                     addresses=addresses,
                     is_liquid=app.specter.is_liquid,
@@ -101,11 +101,9 @@ def index():
             else:
                 flash(f"Wrong action {action}", "error")
     except Exception as e:
-        print(e)
-        raise e
         flash(f"Server error: {e}", "error")
     return render_template(
-        "massfund/index.jinja",
+        "exfund/index.jinja",
         wallets=wallets,
         show_menu=show_menu,
         rawcsv=rawcsv,

@@ -1,4 +1,4 @@
-from embeed.specterext.massfund.util import *
+from cryptoadvance.specterext.exfund.util import *
 
 DATA = """
 Serial Number,Address,Amount

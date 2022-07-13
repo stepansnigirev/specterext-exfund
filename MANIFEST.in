@@ -1,5 +1,5 @@
-recursive-include src/embeed/specterext/massfund/templates *
-recursive-include src/embeed/specterext/massfund/static *
-recursive-include src/embeed/specterext/massfund/*/LC_MESSAGES *.mo
-recursive-include src/embeed/specterext/massfund/translations/*/LC_MESSAGES *.po
+recursive-include src/cryptoadvance/specterext/exfund/templates *
+recursive-include src/cryptoadvance/specterext/exfund/static *
+recursive-include src/cryptoadvance/specterext/exfund/*/LC_MESSAGES *.mo
+recursive-include src/cryptoadvance/specterext/exfund/translations/*/LC_MESSAGES *.po
 include requirements.txt

@@ -16,14 +16,14 @@ from flask_apscheduler import APScheduler
 logger = logging.getLogger(__name__)
 
 
-class MassfundService(Service):
-    id = "massfund"
-    name = "Massfund Service"
-    icon = "massfund/img/logo.svg"
-    logo = "massfund/img/logo.svg"
-    desc = "Where a massfund grows bigger."
+class ExfundService(Service):
+    id = "exfund"
+    name = "Exfund Service"
+    icon = "exfund/img/logo.svg"
+    logo = "exfund/img/logo.svg"
+    desc = "Fund multiple addresses in one go."
     has_blueprint = True
-    blueprint_module = "embeed.specterext.massfund.controller"
+    blueprint_module = "cryptoadvance.specterext.exfund.controller"
     devstatus = devstatus_beta
     isolated_client = True
 

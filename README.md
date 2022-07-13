@@ -1,8 +1,16 @@
-# Massfund
+# Exfund
 
-Specter extension to fund multiple addresses from wallet
+Specter extension to fund multiple addresses from a wallet
 
-Run:
+
+
+## Install with pip
+
+```sh
+python3 -m pip install specterext-exfund
+```
+
+## Run in dev mode:
 
 ```sh
 python3 -m cryptoadvance.specter server --config DevelopmentConfig --debug

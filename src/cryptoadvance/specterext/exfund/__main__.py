@@ -16,7 +16,7 @@ def cli():
 @click.option(
     "--host",
     default="127.0.0.1",
-    help="if you specify --host 0.0.0.0 then Massfund will be available in your local LAN.",
+    help="if you specify --host 0.0.0.0 then Exfund will be available in your local LAN.",
 )
 @click.option(
     "--ssl/--no-ssl",
@@ -33,7 +33,7 @@ def cli():
 )
 def start(ctx, host, ssl, debug, filelog, config):
     if config == None:
-        config = "embeed.specterext.massfund.config.AppProductionConfig"
+        config = "cryptoadvance.specterext.exfund.config.AppProductionConfig"
     ctx.invoke(
         server,
         host=host,
