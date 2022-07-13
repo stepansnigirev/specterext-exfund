@@ -24,7 +24,7 @@ class ExfundService(Service):
     desc = "Fund multiple addresses in one go."
     has_blueprint = True
     blueprint_module = "cryptoadvance.specterext.exfund.controller"
-    devstatus = devstatus_beta
+    devstatus = devstatus_prod
     isolated_client = True
 
     # TODO: As more Services are integrated, we'll want more robust categorization and sorting logic
