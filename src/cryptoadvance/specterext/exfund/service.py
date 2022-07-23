@@ -19,8 +19,8 @@ logger = logging.getLogger(__name__)
 class ExfundService(Service):
     id = "exfund"
     name = "Exfund Service"
-    icon = "exfund/img/logo.svg"
-    logo = "exfund/img/logo.svg"
+    icon = "exfund/img/logo.png"
+    logo = "exfund/img/logo.png"
     desc = "Fund multiple addresses in one go."
     has_blueprint = True
     blueprint_module = "cryptoadvance.specterext.exfund.controller"

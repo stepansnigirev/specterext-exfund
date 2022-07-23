@@ -7,13 +7,13 @@
 <div class="card" style="width: 800px">
 <form action="." method="POST" role="form">
     <input type="hidden" class="csrf-token" name="csrf_token" value="{{ csrf_token() }}"/>
-    <h1>Mass fund extension</h1>
+    <h1>Exfund extension</h1>
     <p class="note">
         This extension helps with funding multiple addresses in a single transaction.<br>
         Select or drag-and-drop a CSV file containing addresess and click "Parse" to go to preview.<br><br>
         Valid CSV file can contain any number of columns, but one of them must be with addresses.<br>
         Amount column is optional, but if exists it should have amount in satoshi.<br><br>
-        Recognized column names (case-insensitive, optional): <code>Address</code>, <code>Amount</code>, <code>Label</code>
+        Recognized column names (case-insensitive, optional): <code>Address</code>, <code>Amount</code>, <code>Label</code>{% if specter.is_liquid %}, <code>Asset</code> (as hex assetid).{% endif %}
     </p>
     <h2>Destinations</h2>
     <div class="row">
