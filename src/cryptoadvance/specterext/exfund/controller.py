@@ -79,19 +79,21 @@ def index():
                     assets = ["btc" for a in addresses]
                     scales = [1e-8 if u == "sat" else 1 for u in request.form.getlist("units[]")]
                 obj = {
-                    "fee_option": request.form.get("fee_option", "dynamic"),
+                    "recipients": [
+                        {
+                            "address": address,
+                            "amount": round(float(amount)*scale, 8), # convert sat to btc
+                            "unit": asset,
+                            "label": label
+                        }
+                        for address, amount, scale, asset, label
+                        in zip(addresses, amounts, scales, assets, labels)
+                    ],
+                    "rbf_tx_id": "",
                     "fee_rate": request.form.get("fee_rate", "1"),
-                    "fee_rate_dynamic": request.form.get("fee_rate_dynamic", "1"),
                     "rbf": request.form.get("rbf", True),
                 }
-                for i, (addr, label, amount, asset, scale) in enumerate(
-                    zip(addresses, labels, amounts, assets, scales)
-                ):
-                    obj[f"address_{i}"] = addr
-                    obj[f"label_{i}"] = label
-                    obj[f"btc_amount_{i}"] = round(float(amount) * scale, 8)
-                    obj[f"amount_unit_{i}"] = asset
-                psbt_creator = PsbtCreator(app.specter, wallet, "ui", request_form=obj)
+                psbt_creator = PsbtCreator(app.specter, wallet, "json", request_json=obj)
                 psbt = psbt_creator.create_psbt(wallet)
                 return render_template(
                     "wallet/send/sign/wallet_send_sign_psbt.jinja",
