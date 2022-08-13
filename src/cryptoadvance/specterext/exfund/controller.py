@@ -66,7 +66,7 @@ def index():
                 )
             elif action == "createpsbt":
                 wallet_alias = request.form.get("source_wallet")
-                wallet = current_user.wallet_manager.wallets[wallet_alias]
+                wallet = current_user.wallet_manager.get_by_alias(wallet_alias)
                 addresses = request.form.getlist("addresses[]")
                 labels = request.form.getlist("labels[]")
                 amounts = request.form.getlist("amounts[]")

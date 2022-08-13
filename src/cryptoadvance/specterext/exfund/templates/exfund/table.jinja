@@ -32,7 +32,7 @@
 		</div>
 	{% endif %}
 	<br><br>
-	<div class="table-container" style="padding: 0 50px 50px 50px; width: 100%; max-height: 500px; overflow-y: scroll;">
+	<div class="table-container" style="padding: 0 50px 50px 50px; width: 100%; overflow-y: auto; overflow-x: auto;">
 		<table>
 		<thead>
 			<tr>
@@ -53,7 +53,7 @@
 				<td>{{ loop.index }}</td>
 				<td>{{ addr["address"] }}<input type="hidden" value="{{addr["address"]}}" name="addresses[]"></td>
 				<td><input type="text" name="labels[]" value="{{ addr["label"] }}"></td>
-				<td><input type="number" class="exfund_amount" name="amounts[]" step="any" style="width: 200px" value="{{ addr["amount"] }}"></td>
+				<td><input type="number" class="exfund_amount" name="amounts[]" step="any" style="max-width: 150px; min-width: 100px;" value="{{ addr["amount"] }}"></td>
 				{% if is_liquid %}
 					<td><select class="inline exfund_asset" name="assets[]" style="max-width: 200px;">
 						{% for asset in assets %}
@@ -78,7 +78,7 @@
 		<fee-selection id="fee-selection-component"></fee-selection>
 	</div>
 	<div class="row center" style="padding: 20px 50px">
-		<button type="submit" class="btn inline" name="action" value="createpsbt" style="max-width: 200px; padding: 15px 0;">Continue</button>
+		<button type="submit" class="btn inline" name="action" value="createpsbt" style="max-width: 300px;">Continue</button>
 	</div>
 </form>
 {% endblock %}
