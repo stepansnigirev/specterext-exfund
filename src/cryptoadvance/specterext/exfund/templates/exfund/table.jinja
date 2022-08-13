@@ -1,5 +1,8 @@
 {% extends "base.jinja" %}
 {% block main %}
+
+{% include "exfund/components/text-explainer.html" %}
+
 <form action="." method="POST" style="width:100%">
 	<input type="hidden" class="csrf-token" name="csrf_token" value="{{ csrf_token() }}"/>
 	<h1>Source wallet</h1>
@@ -32,7 +35,7 @@
 		</div>
 	{% endif %}
 	<br><br>
-	<div class="table-container" style="padding: 0 50px 50px 50px; width: 100%; overflow-y: auto; overflow-x: auto;">
+	<div class="table-container" style="padding: 0 50px 20px 50px; width: 100%; overflow-y: auto; overflow-x: auto;">
 		<table>
 		<thead>
 			<tr>
@@ -72,10 +75,16 @@
 		</tbody>
 		</table>
 	</div>
-	<br><br>
-	<div class="center row">
-		{% include "exfund/components/fee-selection.html" %}
-		<fee-selection id="fee-selection-component"></fee-selection>
+	<div class="row center" style="padding: 0 50px;">
+	    <text-explainer style="display: flex; flex-direction: column; align-items: center;">
+	        <div slot="title">
+	            <h2 class="center" style="display: block; text-align: center;">Fee selection</h2>
+	        </div>
+	        <div slot="content" style="padding: 10px 50px;">
+				{% include "exfund/components/fee-selection.html" %}
+				<fee-selection id="fee-selection-component"></fee-selection>
+			</div>
+		</text-explainer>
 	</div>
 	<div class="row center" style="padding: 20px 50px">
 		<button type="submit" class="btn inline" name="action" value="createpsbt" style="max-width: 300px;">Continue</button>

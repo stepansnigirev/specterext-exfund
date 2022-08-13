@@ -3,6 +3,7 @@
 
 {% include "includes/file-uploader.html" %}
 {% include "includes/dnd-textarea.html" %}
+{% include "exfund/components/text-explainer.html" %}
 
 <div class="card" style="width: 800px">
 <form action="." method="POST" role="form">
@@ -27,14 +28,21 @@
     <div class="row center">
         <button type="submit" class="btn" name="action" value="parse" style="margin: 8px; max-width: 300px;">Parse destinations</button>
     </div>
-    <br><br>
-    <h2 class="center">Settings</h2>
-    <div class="row center" style="margin: 10px 0;">
-        <label><input type="checkbox" class="inline" name="show_menu" id="show_menu" {{'checked' if show_menu else ''}}> Show menu on sidebar</label>
-    </div>
-    <div class="row center">
-        <button type="submit" class="btn" style="max-width: 300px;" name="action" value="settings">Save settings</button>
-    </div>
+    <br>
+    <text-explainer>
+        <span slot="title">
+            <h2 class="center">Settings</h2>
+        </span>
+        <div slot="content">
+            <div class="row center" style="margin: 10px 0;">
+                <label><input type="checkbox" class="inline" name="show_menu" id="show_menu" {{'checked' if show_menu else ''}}> Show menu on sidebar</label>
+            </div>
+            <div class="row center">
+                <button type="submit" class="btn" style="max-width: 300px;" name="action" value="settings">Save settings</button>
+            </div>
+        </div>
+    </text-explainer>
+
 </form>
 </div>
 {% endblock %}
