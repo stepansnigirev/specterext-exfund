@@ -9,6 +9,7 @@ Specter extension to fund multiple addresses from a wallet. Parses CSV files wit
 ## Install with pip
 
 ```sh
+python3 -m pip install cryptoadvance.specter
 python3 -m pip install specterext-exfund
 ```
 
