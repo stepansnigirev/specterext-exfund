@@ -1,7 +1,7 @@
 import logging
 from flask import redirect, render_template, request, url_for, flash
 from flask import current_app as app
-from flask_login import login_required, current_user
+from flask_login import login_required
 
 from cryptoadvance.specter.specter import Specter
 from cryptoadvance.specter.services.controller import user_secret_decrypted_required
@@ -30,10 +30,10 @@ def specter() -> Specter:
 @exfund_endpoint.route("/", methods=["GET", "POST"])
 @login_required
 def index():
-    user = app.specter.user_manager.get_user()
+    user = specter().user_manager.get_user()
     show_menu = ExfundService.id in user.services
-    wallet_names = sorted(current_user.wallet_manager.wallets.keys())
-    wallets = [current_user.wallet_manager.wallets[name] for name in wallet_names]
+    wallet_names = sorted(user.wallet_manager.wallets_names)
+    wallets = [user.wallet_manager.get_by_alias(name) for name in wallet_names]
     rawcsv = ""
     try:
         if request.method == "POST":
@@ -47,30 +47,30 @@ def index():
             elif action == "parse":
                 rawcsv = request.form.get("rawcsv", "")
                 addresses, chain, invalid_lines = parse_csv(rawcsv)
-                expected_net = get_network(app.specter.chain)
+                expected_net = get_network(specter().chain)
                 net = get_network(chain)
                 if net != expected_net:
                     raise ValueError(
-                        f"Invalid chain: {chain}, expected: {app.specter.chain}"
+                        f"Invalid chain: {chain}, expected: {specter().chain}"
                     )
                 if invalid_lines:
                     flash(f"{len(invalid_lines)} lines couldn't be parsed")
                 assets = set().union(*[wallet.balance.get("assets",{}).keys() for wallet in wallets])
-                assets = [app.specter.default_asset]+list(assets)
+                assets = [specter().default_asset]+list(assets)
                 return render_template(
                     "exfund/table.jinja",
                     wallets=wallets,
                     addresses=addresses,
-                    is_liquid=app.specter.is_liquid,
+                    is_liquid=specter().is_liquid,
                     assets=assets,
                 )
             elif action == "createpsbt":
                 wallet_alias = request.form.get("source_wallet")
-                wallet = current_user.wallet_manager.get_by_alias(wallet_alias)
+                wallet = user.wallet_manager.get_by_alias(wallet_alias)
                 addresses = request.form.getlist("addresses[]")
                 labels = request.form.getlist("labels[]")
                 amounts = request.form.getlist("amounts[]")
-                if app.specter.is_liquid:
+                if specter().is_liquid:
                     assets = request.form.getlist("assets[]")
                     scales = [1e-8 if a.endswith("-sat") else 1 for a in assets]
                     # remove -sat part
@@ -93,7 +93,7 @@ def index():
                     "fee_rate": request.form.get("fee_rate", "1"),
                     "rbf": request.form.get("rbf", True),
                 }
-                psbt_creator = PsbtCreator(app.specter, wallet, "json", request_json=obj)
+                psbt_creator = PsbtCreator(specter(), wallet, "json", request_json=obj)
                 psbt = psbt_creator.create_psbt(wallet)
                 return render_template(
                     "wallet/send/sign/wallet_send_sign_psbt.jinja",
@@ -101,7 +101,7 @@ def index():
                     labels=labels,
                     wallet_alias=wallet_alias,
                     wallet=wallet,
-                    specter=app.specter,
+                    specter=specter(),
                     rand=0,
                 )
             else:
