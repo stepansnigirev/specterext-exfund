@@ -46,15 +46,6 @@
 				{% endfor %}
 			</select>
 		</div>
-		<div class="row" style="padding: 0 50px;align-items: center; gap: 5px">
-			<label>The same amount for all addresses:</label><input type="number" step="any" id="sameamount" class="inline amount" placeholder="0">
-			{% if not is_liquid %}
-				<select class="inline" name="sameunit" id="sameunit" style="max-width: 80px; min-width: 80px;">
-					<option value="sat" selected>sat</option>
-					<option value="btc">BTC</option>
-				</select>
-			{% endif %}
-		</div>
 		{% if is_liquid %}
 			<div class="row" style="padding: 10px 50px 0 50px; align-items: center; gap: 5px">
 				<label style="width: 350px">The same asset for all addresses:</label>
@@ -66,6 +57,15 @@
 				</select>
 			</div>
 		{% endif %}
+		<div class="row" style="padding: 0 50px;align-items: center; gap: 5px">
+			<label>The same amount for all addresses:</label><input type="number" step="any" id="sameamount" class="inline amount" placeholder="0">
+			{% if not is_liquid %}
+				<select class="inline" name="sameunit" id="sameunit" style="max-width: 80px; min-width: 80px;">
+					<option value="sat" selected>sat</option>
+					<option value="btc">BTC</option>
+				</select>
+			{% endif %}
+		</div>
 		<div class="table-holder" style="padding: 0 50px 20px 50px; overflow-y: auto; overflow-x: auto;">
 			<table class="ex-fund-table">
 			<thead>
@@ -172,15 +172,15 @@
 			})
 		});
 		// Reset if units are changed
-		sameasset.addEventListener('change', resetInputs)
-			function resetInputs() {
-				sameasset.value = "";
-				sameasset.style.width = minWidthSameAmount + "ch";
-				amounts.forEach(el => {
-					el.value = "";
-					el.style.width = minWidthSingleAmount + "ch";
+		function resetInputs() {
+			sameasset.value = "";
+			sameasset.style.width = minWidthSameAmount + "ch";
+			amounts.forEach(el => {
+				el.value = "";
+				el.style.width = minWidthSingleAmount + "ch";
 			})
 		};
+		sameasset.addEventListener('change', resetInputs);
 	{% else %}
 		const sameunit = document.getElementById("sameunit");
 		const units = Array.from(document.querySelectorAll(".exfund_unit"));
@@ -192,15 +192,15 @@
 			})
 		});
 		// Reset if units are changed
-		sameunit.addEventListener('change', resetInputs)
-			function resetInputs() {
-				sameamount.value = "";
-				sameamount.style.width = minWidthSameAmount + "ch";
-				amounts.forEach(el => {
-					el.value = "";
-					el.style.width = minWidthSingleAmount + "ch";
+		function resetInputs() {
+			sameamount.value = "";
+			sameamount.style.width = minWidthSameAmount + "ch";
+			amounts.forEach(el => {
+				el.value = "";
+				el.style.width = minWidthSingleAmount + "ch";
 			})
 		};
+		sameunit.addEventListener('change', resetInputs);
 	{% endif %}
 	// Resize if amount fields are pre-populated
 	document.addEventListener("DOMContentLoaded", () => {
