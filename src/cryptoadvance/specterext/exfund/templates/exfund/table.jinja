@@ -1,128 +1,214 @@
 {% extends "base.jinja" %}
 {% block main %}
-
+<style>
+    .amount {
+    	min-width: 8ch;
+    	max-width: 24ch;
+		margin: 0;
+	}
+	.exfund_amount {
+		min-width: 16ch;
+		max-width: 24ch;
+		margin: 0;
+	}
+	h3 {
+        font-weight: unset;
+        margin: 5px 0 5px 0;
+    }
+    @media (max-width: 690px) {
+    	.collapse-on-zooom {
+    		display: none;
+    	}
+    }
+    .td-new-line {
+    	max-width: 150px;
+    	word-wrap: break-word;
+    }
+    .ex-fund-table {
+    	width: 100%;
+    }
+    .ex-fund-form {
+		display: flex; 
+		flex-direction: column; 
+		align-items: center; 
+		row-gap: 15px; 
+		width: 100%;
+    }
+</style>
 {% include "exfund/components/text-explainer.html" %}
-
-<form action="." method="POST" style="width:100%">
-	<input type="hidden" class="csrf-token" name="csrf_token" value="{{ csrf_token() }}"/>
-	<h1>Source wallet</h1>
-	<div class="row center">
-		<select name="source_wallet" style="max-width: 200px;">
-			{% for wallet in wallets %}
-			<option value="{{wallet.alias}}">{{ wallet.name }}</option>
-			{% endfor %}
-		</select>
-	</div>
-	<h1><br>Funding {{ addresses | length }} addresses</h1>
-	<div class="row" style="padding: 0 50px; align-items: center;">
-		<label style="width: 350px">The same amount for all addresses:</label><input type="number" id="sameamount" class="inline" style="width: 200px; margin:0; margin-right: 15px;" value="0">
-		{% if not is_liquid %}
-			<select class="inline" name="sameunit" id="sameunit" style="max-width: 80px; min-width: 80px;">
-				<option value="sat" selected>sat</option>
-				<option value="btc">BTC</option>
-			</select>
-		{% endif %}
-	</div>
-	{% if is_liquid %}
-		<div class="row" style="padding: 10px 50px 0 50px; align-items: center;">
-			<label style="width: 350px">The same asset for all addresses:</label>
-			<select class="inline" name="sameasset" id="sameasset" style="max-width: 200px;">
-				{% for asset in assets %}
-				<option value="{{asset}}">{{ asset | assetlabel }}</option>
-				<option value="{{asset}}-sat">{{ asset | assetlabel }}-sat</option>
+	<form class="ex-fund-form" action="." method="POST">
+		<input type="hidden" class="csrf-token" name="csrf_token" value="{{ csrf_token() }}"/>
+		<h1 style="margin: 0">Source wallet</h1>
+		<div class="row center">
+			<select name="source_wallet" style="max-width: 200px;">
+				{% for wallet in wallets %}
+					<option value="{{wallet.alias}}">{{ wallet.name }}</option>
 				{% endfor %}
 			</select>
 		</div>
-	{% endif %}
-	<br><br>
-	<div class="table-container" style="padding: 0 50px 20px 50px; width: 100%; overflow-y: auto; overflow-x: auto;">
-		<table>
-		<thead>
-			<tr>
-				<th>#</th>
-				<th>Address</th>
-				<th>Label</th>
-				<th>Amount</th>
-				{% if is_liquid %}
-					<th>Asset</th>
-				{% else %}
-					<th>Unit</th>
-				{% endif %}
-			</tr>
-		</thead>
-		<tbody>
-		{% for addr in addresses %}
-			<tr>
-				<td>{{ loop.index }}</td>
-				<td>{{ addr["address"] }}<input type="hidden" value="{{addr["address"]}}" name="addresses[]"></td>
-				<td><input type="text" name="labels[]" value="{{ addr["label"] }}"></td>
-				<td><input type="number" class="exfund_amount" name="amounts[]" step="any" style="max-width: 150px; min-width: 100px;" value="{{ addr["amount"] }}"></td>
-				{% if is_liquid %}
-					<td><select class="inline exfund_asset" name="assets[]" style="max-width: 200px;">
-						{% for asset in assets %}
+		<div class="row" style="padding: 0 50px;align-items: center; gap: 5px">
+			<label>The same amount for all addresses:</label><input type="number" id="sameamount" class="inline amount" placeholder="0">
+			{% if not is_liquid %}
+				<select class="inline" name="sameunit" id="sameunit" style="max-width: 80px; min-width: 80px;">
+					<option value="sat" selected>sat</option>
+					<option value="btc">BTC</option>
+				</select>
+			{% endif %}
+		</div>
+		{% if is_liquid %}
+			<div class="row" style="padding: 10px 50px 0 50px; align-items: center; gap: 5px">
+				<label style="width: 350px">The same asset for all addresses:</label>
+				<select class="inline" name="sameasset" id="sameasset" style="max-width: 200px;">
+					{% for asset in assets %}
 						<option value="{{asset}}">{{ asset | assetlabel }}</option>
 						<option value="{{asset}}-sat">{{ asset | assetlabel }}-sat</option>
-						{% endfor %}
-					</select></td>
-				{% else %}
-					<td><select class="inline exfund_unit" name="units[]" style="max-width: 80px; min-width: 80px;">
-						<option value="sat" selected>sat</option>
-						<option value="btc">BTC</option>
-					</select></td>
-				{% endif %}
-			</tr>
-		{% endfor %}
-		</tbody>
-		</table>
-	</div>
-	<div class="row center" style="padding: 0 50px;">
-	    <text-explainer style="display: flex; flex-direction: column; align-items: center;">
-	        <div slot="title">
-	            <h2 class="center" style="display: block; text-align: center;">Fee selection</h2>
-	        </div>
-	        <div slot="content" style="padding: 10px 50px;">
-				{% include "exfund/components/fee-selection.html" %}
-				<fee-selection id="fee-selection-component"></fee-selection>
+					{% endfor %}
+				</select>
 			</div>
-		</text-explainer>
-	</div>
-	<div class="row center" style="padding: 20px 50px">
-		<button type="submit" class="btn inline" name="action" value="createpsbt" style="max-width: 300px;">Continue</button>
-	</div>
-</form>
+		{% endif %}
+		<div class="table-holder" style="padding: 0 50px 20px 50px; overflow-y: auto; overflow-x: auto;">
+			<table class="ex-fund-table">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th class="collapse-on-zooom">Address</th>
+					<th>Label</th>
+					<th>Amount</th>
+					{% if is_liquid %}
+						<th>Asset</th>
+					{% else %}
+						<th class="collapse-on-zooom">Unit</th>
+					{% endif %}
+				</tr>
+			</thead>
+			<tbody>
+			{% for addr in addresses %}
+				<tr>
+					<td>{{ loop.index }}</td>
+					<td class="collapse-on-zooom td-new-line">{{ addr["address"] }}<input type="hidden" value="{{addr["address"]}}" name="addresses[]"></td>
+					<td><input type="text" name="labels[]" value="{{ addr["label"] }}"></td>
+					<td><input type="number" class="exfund_amount" name="amounts[]" step="any" value="{{ addr["amount"] }}" placeholder="0"></td>
+					{% if is_liquid %}
+						<td><select class="inline exfund_asset" name="assets[]" style="max-width: 200px;">
+							{% for asset in assets %}
+							<option value="{{asset}}">{{ asset | assetlabel }}</option>
+							<option value="{{asset}}-sat">{{ asset | assetlabel }}-sat</option>
+							{% endfor %}
+						</select></td>
+					{% else %}
+						<td class="collapse-on-zooom"><select class="inline exfund_unit" name="units[]" style="max-width: 80px; min-width: 80px;">
+							<option value="sat" selected>sat</option>
+							<option value="btc">BTC</option>
+						</select></td>
+					{% endif %}
+				</tr>
+			{% endfor %}
+			</tbody>
+			</table>
+		</div>
+		<div class="row center" style="padding: 0 50px;">
+		    <text-explainer style="display: flex; flex-direction: column; align-items: center;">
+		        <h3 slot="title">Fee selection</h3>
+		        <div slot="content" style="padding: 10px 50px;">
+					{% include "exfund/components/fee-selection.html" %}
+					<fee-selection id="fee-selection-component"></fee-selection>
+				</div>
+			</text-explainer>
+		</div>
+		<div class="row center" style="padding: 20px 50px">
+			<button type="submit" class="btn inline" name="action" value="createpsbt" style="max-width: 300px;">Continue</button>
+		</div>
+	</form>
 {% endblock %}
 {% block scripts %}
 <script type="text/javascript">
-	let events = ["change", "keyup"]; // add click?
-	let sameamount = document.getElementById("sameamount");
-	let amounts = Array.from(document.querySelectorAll(".exfund_amount"));
+	// Set amounts equal to sameamount
+	const events = ["change", "keyup", "input"]; // add click?
+	const customInput = new CustomEvent('customInput');
+	const amounts = Array.from(document.querySelectorAll(".exfund_amount"));
+	const sameamount = document.getElementById('sameamount');
 	events.forEach(event_type =>{
 		sameamount.addEventListener(event_type, (e) => {
 			amounts.forEach(el => {
 				el.value = sameamount.value;
+				// Standard input event doesn't occur if there is no user input
+				el.addEventListener('customInput', resizeSingleAmount(el))
+  				el.dispatchEvent(customInput);
 			});
 		});
 	});
-{% if is_liquid %}
-	let sameasset = document.getElementById("sameasset");
-	let assets = Array.from(document.querySelectorAll(".exfund_asset"));
-	events.forEach(event_type =>{
-		sameasset.addEventListener(event_type, (e) => {
-			assets.forEach(el => {
-				el.value = sameasset.value;
-			});
+	// Resizing
+	const minWidthSameAmount = 8;
+	const lastCharSameAmount = 3;
+	const thresholdSameAmount = minWidthSameAmount - lastCharSameAmount;
+	const minWidthSingleAmount = 16;
+	const lastCharSingleAmount = 10;
+	const thresholdSingleAmount = minWidthSingleAmount - lastCharSingleAmount;
+	sameamount.addEventListener('input', resizeSameAmount);
+	amounts.forEach(el => {
+		el.addEventListener('input', () => {
+			resizeSingleAmount(el)
+		})
+	})
+	function resizeSameAmount() {
+		// Increased width of input field from 1000 sats onwards
+		let maxValue = Math.max((this.value.length + thresholdSameAmount), minWidthSameAmount);
+		this.style.width = maxValue + 'ch';
+	}
+	function resizeSingleAmount(inputElement) {
+		// Increased width of input field from 10 bio. sats onwards
+		let maxValue = Math.max((inputElement.value.length + thresholdSingleAmount), minWidthSingleAmount)
+		inputElement.style.width = maxValue + 1 + 'ch';
+	}
+	// Units
+	{% if is_liquid %}
+		const sameasset = document.getElementById("sameasset");
+		const assets = Array.from(document.querySelectorAll(".exfund_asset"));
+		events.forEach(event_type =>{
+			sameasset.addEventListener(event_type, (e) => {
+				assets.forEach(el => {
+					el.value = sameasset.value;
+				})
+			})
 		});
-	});
-{% else %}
-	let sameunit = document.getElementById("sameunit");
-	let units = Array.from(document.querySelectorAll(".exfund_unit"));
-	events.forEach(event_type =>{
-		sameunit.addEventListener(event_type, (e) => {
-			units.forEach(el => {
-				el.value = sameunit.value;
-			});
+		// Reset if units are changed
+		sameasset.addEventListener('change', resetInputs)
+			function resetInputs() {
+				sameasset.value = "";
+				sameasset.style.width = minWidthSameAmount + "ch";
+				amounts.forEach(el => {
+					el.value = "";
+					el.style.width = minWidthSingleAmount + "ch";
+			})
+		};
+	{% else %}
+		const sameunit = document.getElementById("sameunit");
+		const units = Array.from(document.querySelectorAll(".exfund_unit"));
+		events.forEach(event_type =>{
+			sameunit.addEventListener(event_type, (e) => {
+				units.forEach(el => {
+					el.value = sameunit.value;
+				})
+			})
 		});
-	});
-{% endif %}
+		// Reset if units are changed
+		sameunit.addEventListener('change', resetInputs)
+			function resetInputs() {
+				sameamount.value = "";
+				sameamount.style.width = minWidthSameAmount + "ch";
+				amounts.forEach(el => {
+					el.value = "";
+					el.style.width = minWidthSingleAmount + "ch";
+			})
+		};
+	{% endif %}
+	// Resize if amount fields are pre-populated
+	document.addEventListener("DOMContentLoaded", () => {
+		amounts.forEach(el => {
+			if (el.value != "") {
+				el.dispatchEvent(customInput);
+			}
+		})
+	})
 </script>
 {% endblock %}

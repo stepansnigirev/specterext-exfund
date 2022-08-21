@@ -28,10 +28,10 @@ def specter() -> Specter:
 
 
 @exfund_endpoint.route("/", methods=["GET", "POST"])
+@login_required
 def index():
     user = app.specter.user_manager.get_user()
     show_menu = ExfundService.id in user.services
-
     wallet_names = sorted(current_user.wallet_manager.wallets.keys())
     wallets = [current_user.wallet_manager.wallets[name] for name in wallet_names]
     rawcsv = ""

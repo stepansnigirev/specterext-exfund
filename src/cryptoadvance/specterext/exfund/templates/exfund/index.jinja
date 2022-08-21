@@ -1,6 +1,13 @@
 {% extends "base.jinja" %}
 {% block main %}
 
+<style>
+    h3 {
+        font-weight: unset;
+        margin: 5px 0 5px 0;
+    }
+</style>
+
 {% include "includes/file-uploader.html" %}
 {% include "includes/dnd-textarea.html" %}
 {% include "exfund/components/text-explainer.html" %}
@@ -10,13 +17,14 @@
     <input type="hidden" class="csrf-token" name="csrf_token" value="{{ csrf_token() }}"/>
     <h1>Exfund extension</h1>
     <p class="note">
-        This extension helps with funding multiple addresses in a single transaction.<br>
-        Select or drag-and-drop a CSV file containing addresess and click "Parse" to go to preview.<br><br>
-        Valid CSV file can contain any number of columns, but one of them must be with addresses.<br>
-        Amount column is optional, but if exists it should have amount in satoshi.<br><br>
+        This extension helps with funding multiple addresses in a single transaction ("transaction batching").<br>
+        Select or drag-and-drop a CSV file containing addresess and click "Parse" to go to preview.<br>
+        You can also just paste addresses here (use a new line for each address) and fill out the rest later in the preview.<br><br>
+        CSV files can contain any number of columns, but one of them must be with addresses.<br>
+        Amount column is optional, but if it exists the amounts should be in satoshis.<br><br>
         Recognized column names (case-insensitive, optional): <code>Address</code>, <code>Amount</code>, <code>Label</code>{% if specter.is_liquid %}, <code>Asset</code> (as hex assetid).{% endif %}
     </p>
-    <h2>Destinations</h2>
+    <h3>Destinations</h3>
     <div class="row">
         <dnd-textarea name="rawcsv" id="rawcsv" placeholder="You can paste a list of addresses here or drag & drop a csv file." value="{{rawcsv}}"></dnd-textarea>
     </div>
@@ -31,7 +39,7 @@
     <br>
     <text-explainer>
         <span slot="title">
-            <h2 class="center">Settings</h2>
+            <h3 class="center">Settings</h3>
         </span>
         <div slot="content">
             <div class="row center" style="margin: 10px 0;">
