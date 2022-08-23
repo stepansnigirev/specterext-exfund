@@ -211,4 +211,17 @@
 		})
 	})
 </script>
+
+<script>
+	function validate() {
+		console.log("muh")
+		var sourceWallet = document.getElementById("source_wallet").value;
+		console.log(sourceWallet)
+		if (sourceWallet == "") {
+			showError("Please choose a Source Wallet!")
+			return false
+		}
+		return true
+	}
+</script>
 {% endblock %}

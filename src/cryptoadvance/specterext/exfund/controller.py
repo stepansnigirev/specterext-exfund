@@ -33,7 +33,7 @@ def index():
     user = specter().user_manager.get_user()
     show_menu = ExfundService.id in user.services
     wallet_names = sorted(user.wallet_manager.wallets_names)
-    wallets = [user.wallet_manager.get_by_alias(name) for name in wallet_names]
+    wallets = [user.wallet_manager.wallets[name] for name in wallet_names]
     rawcsv = ""
     try:
         if request.method == "POST":
@@ -107,6 +107,7 @@ def index():
             else:
                 flash(f"Wrong action {action}", "error")
     except Exception as e:
+        logger.exception(e)
         flash(f"Server error: {e}", "error")
     return render_template(
         "exfund/index.jinja",
