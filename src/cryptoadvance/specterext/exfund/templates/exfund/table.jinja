@@ -51,8 +51,9 @@
 				<label style="width: 350px">The same asset for all addresses:</label>
 				<select class="inline" name="sameasset" id="sameasset" style="max-width: 200px;">
 					{% for asset in assets %}
-						<option value="{{asset}}">{{ asset | assetlabel }}</option>
-						<option value="{{asset}}-sat">{{ asset | assetlabel }}-sat</option>
+						{% set asset_name =  asset | assetlabel %}
+						<option value="{{asset}}">{{ asset_name }}</option>
+						<option value="{{asset}}-sat" {% if asset_name == "tLBTC" or asset_name == "LBTC" %} selected {% endif %}>{{ asset_name }}-sat</option>
 					{% endfor %}
 				</select>
 			</div>
@@ -91,8 +92,9 @@
 					{% if is_liquid %}
 						<td><select class="inline exfund_asset" name="assets[]" style="max-width: 200px;">
 							{% for asset in assets %}
-							<option value="{{asset}}">{{ asset | assetlabel }}</option>
-							<option value="{{asset}}-sat">{{ asset | assetlabel }}-sat</option>
+								{% set asset_name =  asset | assetlabel %}
+								<option value="{{asset}}">{{ asset_name }}</option>
+								<option value="{{asset}}-sat" {% if asset_name == "tLBTC" or asset_name == "LBTC" %} selected {% endif %}>{{ asset_name }}-sat</option>
 							{% endfor %}
 						</select></td>
 					{% else %}
@@ -171,15 +173,6 @@
 				})
 			})
 		});
-		// Reset if units are changed
-		function resetInputs() {
-			sameasset.value = "";
-			sameasset.style.width = minWidthSameAmount + "ch";
-			amounts.forEach(el => {
-				el.value = "";
-				el.style.width = minWidthSingleAmount + "ch";
-			})
-		};
 		sameasset.addEventListener('change', resetInputs);
 	{% else %}
 		const sameunit = document.getElementById("sameunit");
@@ -191,17 +184,16 @@
 				})
 			})
 		});
-		// Reset if units are changed
-		function resetInputs() {
-			sameamount.value = "";
-			sameamount.style.width = minWidthSameAmount + "ch";
-			amounts.forEach(el => {
-				el.value = "";
-				el.style.width = minWidthSingleAmount + "ch";
-			})
-		};
 		sameunit.addEventListener('change', resetInputs);
 	{% endif %}
+	function resetInputs() {
+		sameamount.value = "";
+		sameamount.style.width = minWidthSameAmount + "ch";
+		amounts.forEach(el => {
+			el.value = "";
+			el.style.width = minWidthSingleAmount + "ch";
+		})
+	};
 	// Resize if amount fields are pre-populated
 	document.addEventListener("DOMContentLoaded", () => {
 		amounts.forEach(el => {
@@ -210,18 +202,5 @@
 			}
 		})
 	})
-</script>
-
-<script>
-	function validate() {
-		console.log("muh")
-		var sourceWallet = document.getElementById("source_wallet").value;
-		console.log(sourceWallet)
-		if (sourceWallet == "") {
-			showError("Please choose a Source Wallet!")
-			return false
-		}
-		return true
-	}
 </script>
 {% endblock %}

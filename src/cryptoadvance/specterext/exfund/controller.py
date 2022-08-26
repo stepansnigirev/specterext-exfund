@@ -33,6 +33,9 @@ def index():
     user = specter().user_manager.get_user()
     show_menu = ExfundService.id in user.services
     wallet_names = sorted(user.wallet_manager.wallets_names)
+    if len(wallet_names) == 0:
+        flash("You need a wallet to use the exfund extension.", "error")
+        return redirect(url_for("wallets_endpoint.new_wallet_type"))
     wallets = [user.wallet_manager.wallets[name] for name in wallet_names]
     rawcsv = ""
     try:
